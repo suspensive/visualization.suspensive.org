@@ -1,4 +1,4 @@
-import { useResetBoundary, withResetBoundary } from '../libs/react-boundary';
+import { useResetBoundary, withResetBoundary } from '@suspensive/boundary';
 import { useQuery } from '@tanstack/react-query';
 import { ResetSuspenseQueryBoundary } from '../libs/react-suspense-query';
 
