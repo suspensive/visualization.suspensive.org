@@ -154,10 +154,10 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
-"@suspensive/boundary@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@suspensive/boundary/-/boundary-0.0.1.tgz#eac6b6e74a11d9d69f61a37a488e6130a7821861"
-  integrity sha512-i4GZs12QA54r6r2jhJKCyopzBFzVB2oU4kIoKyMMS+Sm5YhUZUot0Stn0XrYFbUaM5QFpP7Hp8CBosXJOp6Jqw==
+"@suspensive/boundary@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@suspensive/boundary/-/boundary-0.0.2.tgz#a5b2417eabcca659000724f2609806f5e762b666"
+  integrity sha512-3tjeitEwhXkPjKnZoz6OKyGdYYzOwwO59+gTWOpYPqfgRJOi38NGYAEygGxhmBtEa/RVfnFkzAYiRT2cmYsnXQ==
 
 "@swc/helpers@0.4.11":
   version "0.4.11"
