@@ -1,58 +1,103 @@
-import { useResetBoundary, withResetBoundary } from '@suspensive/boundary';
-import { useQuery } from '@tanstack/react-query';
+import {
+  ErrorBoundary,
+  Suspense,
+  useResetBoundary,
+  withResetBoundary,
+} from '@suspensive/react-boundary';
+import { UseQueryWithSuspense } from '../components/UseQueryWithSuspense';
+import { ErrorAfter4s } from '../components/ErrorAfter4s';
 import { ResetSuspenseQueryBoundary } from '../libs/react-suspense-query';
 
 const Home = withResetBoundary(() => {
-  const { reset, resetKey } = useResetBoundary();
+  const { resetBoundary, resetBoundaryKey } = useResetBoundary();
 
   return (
-    <>
-      <div>
-        <button onClick={reset}>reset</button>
-      </div>
-      <ResetSuspenseQueryBoundary.SSRSafe
-        resetKeys={[resetKey]}
-        pendingFallback={<>AsyncBoundary Loading...</>}
-        rejectedFallback={({ error, reset }) => <button onClick={reset}> {JSON.stringify(error)} error...</button>}
+    <div
+      style={{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '90vh',
+        margin: 16,
+        alignItems: 'center',
+        border: '1px solid white',
+      }}
+    >
+      <span style={{ position: 'absolute', left: 4, top: 4 }}>ResetBoundary</span>
+      <button onClick={resetBoundary}>Reset All</button>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'start',
+          flex: 1,
+          flexDirection: 'column',
+        }}
       >
-        <AsyncComponent />
-      </ResetSuspenseQueryBoundary.SSRSafe>
-    </>
+        <h1>Suspense</h1>
+        check index.html in Network tab of Devtools(Cmd + Opt + I)
+        <h3>Suspense.Default (HTML Streaming)</h3>
+        <Suspense fallback={<>loading...</>}>
+          <UseQueryWithSuspense
+            queryKey={['async', 'alwaysSuccess', 'Both']}
+            axiosLikeFn={getAxiosLike({ successPercentage: 100 })}
+          />
+        </Suspense>
+        <h3>Suspense.CSROnly (Reveal after 2s)</h3>
+        <Suspense.CSROnly fallback={<>loading...</>}>
+          <UseQueryWithSuspense
+            queryKey={['async', 'alwaysSuccess', 'CSROnly']}
+            axiosLikeFn={getAxiosLike({ successPercentage: 100 })}
+          />
+        </Suspense.CSROnly>
+        <h1>ErrorBoundary (Error after 2s)</h1>
+        <ErrorBoundary
+          resetKeys={[resetBoundaryKey]}
+          fallback={({ error, reset }) => (
+            <button onClick={reset}>{JSON.stringify(error)}</button>
+          )}
+        >
+          <ErrorAfter4s />
+        </ErrorBoundary>
+        <h1>ResetSuspenseQueryBoundary (70% Error)</h1>
+        <ResetSuspenseQueryBoundary.CSROnly
+          resetKeys={[resetBoundaryKey]}
+          pendingFallback={<>AsyncBoundary Loading...</>}
+          rejectedFallback={({ error, reset }) => (
+            <button onClick={reset}> {JSON.stringify(error)} error...</button>
+          )}
+        >
+          <UseQueryWithSuspense
+            queryKey={['async', 'almostFailure']}
+            axiosLikeFn={getAxiosLike({ successPercentage: 30 })}
+          />
+        </ResetSuspenseQueryBoundary.CSROnly>
+      </div>
+    </div>
   );
 });
 
-const AsyncComponent = () => {
-  const query = useQuery(
-    ['test'] as const,
-    async () => {
-      const { data } = await axiosLike();
-
-      return data;
-    },
-    {
-      suspense: true,
-    }
-  );
-
-  if (query.isSuccess) {
-    return <>{query.data}</>;
-  }
-
-  return null;
-};
-
-const axiosLike = async () => {
-  const almostFail = getRandom() > 0.3;
-
-  console.log('almostFail', almostFail);
-
-  if (almostFail) {
-    throw { status: 401, message: 'unauthorized' };
-  }
-
-  return { data: 'success in queryFn' };
-};
-
 export default Home;
 
-const getRandom = () => Math.random();
+const getAxiosLike =
+  (option: { waitMs?: number; successPercentage: number }) => async () => {
+    const { waitMs = 2000, successPercentage } = option;
+
+    const isSuccess = Math.random() < successPercentage / 100;
+
+    wait(waitMs);
+
+    if (!isSuccess) {
+      throw { status: 401, message: 'unauthorized' };
+    }
+
+    return { data: 'success in queryFn' };
+  };
+
+const wait = (ms: number) => {
+  var start = Date.now(),
+    now = start;
+  while (now - start < ms) {
+    now = Date.now();
+  }
+};
