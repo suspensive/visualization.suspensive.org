@@ -1,16 +1,16 @@
-import {
-  ErrorBoundary,
-  Suspense,
-  useResetBoundary,
-  withResetBoundary,
-} from '@suspensive/react-boundary';
-import { UseQueryWithSuspense } from '../components/UseQueryWithSuspense';
+import { Suspense, ErrorBoundary } from '@suspensive/react-boundary';
+import UseQueryWithSuspense from '../components/UseQueryWithSuspense';
 import { ErrorAfter4s } from '../components/ErrorAfter4s';
+import { useCallback, useState } from 'react';
 import { ResetSuspenseQueryBoundary } from '../libs/react-suspense-query';
+import dynamic from 'next/dynamic';
 
-const Home = withResetBoundary(() => {
-  const { resetBoundary, resetBoundaryKey } = useResetBoundary();
+const DynamicUseQueryWithSuspense = dynamic(
+  () => import('../components/UseQueryWithSuspense')
+);
 
+const Home = () => {
+  const { reset: resetBoundary, resetKey: resetBoundaryKey } = useResetKey();
   return (
     <div
       style={{
@@ -36,9 +36,9 @@ const Home = withResetBoundary(() => {
       >
         <h1>Suspense</h1>
         check index.html in Network tab of Devtools(Cmd + Opt + I)
-        <h3>Suspense.Default (HTML Streaming)</h3>
+        <h3>default Suspense</h3>
         <Suspense fallback={<>loading...</>}>
-          <UseQueryWithSuspense
+          <DynamicUseQueryWithSuspense
             queryKey={['async', 'alwaysSuccess', 'Both']}
             axiosLikeFn={getAxiosLike({ successPercentage: 100 })}
           />
@@ -75,7 +75,7 @@ const Home = withResetBoundary(() => {
       </div>
     </div>
   );
-});
+};
 
 export default Home;
 
@@ -95,9 +95,16 @@ const getAxiosLike =
   };
 
 const wait = (ms: number) => {
-  var start = Date.now(),
+  let start = Date.now(),
     now = start;
   while (now - start < ms) {
     now = Date.now();
   }
+};
+
+const useResetKey = () => {
+  const [resetKey, setResetKey] = useState({});
+  const reset = useCallback(() => setResetKey(prev => ({ ...prev })), []);
+
+  return { resetKey, reset };
 };

@@ -1,24 +1,26 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query'
 
 type Props = {
-  queryKey: unknown[];
-  axiosLikeFn: () => Promise<{ data: unknown }>;
-};
+  queryKey: unknown[]
+  axiosLikeFn: () => Promise<{ data: unknown }>
+}
 
-export const UseQueryWithSuspense = ({ queryKey, axiosLikeFn }: Props) => {
+const UseQueryWithSuspense = ({ queryKey, axiosLikeFn }: Props) => {
   const query = useQuery(
     queryKey,
     async () => {
-      const { data } = await axiosLikeFn();
+      const { data } = await axiosLikeFn()
 
-      return data;
+      return data
     },
     { suspense: true }
-  );
+  )
 
   if (query.isSuccess) {
-    return <>{query.data}</>;
+    return <>{query.data}</>
   }
 
-  return null;
-};
+  return null
+}
+
+export default UseQueryWithSuspense
