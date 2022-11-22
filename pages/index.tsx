@@ -1,110 +1,138 @@
-import { Suspense, ErrorBoundary } from '@suspensive/react-boundary';
-import UseQueryWithSuspense from '../components/UseQueryWithSuspense';
-import { ErrorAfter4s } from '../components/ErrorAfter4s';
-import { useCallback, useState } from 'react';
-import { ResetSuspenseQueryBoundary } from '../libs/react-suspense-query';
-import dynamic from 'next/dynamic';
+import {
+  AsyncBoundary,
+  ErrorBoundary,
+  Suspense,
+  withResetBoundary,
+} from '@suspensive/react-boundary';
+import { ResetSuspenseQueryBoundary } from '@suspensive/react-query';
+import { QueryErrorResetBoundary } from '@tanstack/react-query';
+import { ComponentWithUseSuspenseQuery } from '../components';
+import {
+  Boundary,
+  Box,
+  Button,
+  DescriptionText,
+  ErrorDescription,
+  Spacer,
+  Spinner,
+} from '../components/uis';
+import { getAxios } from '../helper';
 
-const DynamicUseQueryWithSuspense = dynamic(
-  () => import('../components/UseQueryWithSuspense')
-);
-
-const Home = () => {
-  const { reset: resetBoundary, resetKey: resetBoundaryKey } = useResetKey();
+const BoundaryExplain = withResetBoundary(({ resetBoundary, resetBoundaryKey }) => {
   return (
-    <div
-      style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        height: '90vh',
-        margin: 16,
-        alignItems: 'center',
-        border: '1px solid white',
-      }}
-    >
-      <span style={{ position: 'absolute', left: 4, top: 4 }}>ResetBoundary</span>
-      <button onClick={resetBoundary}>Reset All</button>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'start',
-          flex: 1,
-          flexDirection: 'column',
-        }}
-      >
-        <h1>Suspense</h1>
-        check index.html in Network tab of Devtools(Cmd + Opt + I)
-        <h3>default Suspense</h3>
-        <Suspense fallback={<>loading...</>}>
-          <DynamicUseQueryWithSuspense
-            queryKey={['async', 'alwaysSuccess', 'Both']}
-            axiosLikeFn={getAxiosLike({ successPercentage: 100 })}
+    <Boundary.Area>
+      <Boundary.Title>ResetBoundary</Boundary.Title>
+      <Button style={{ alignSelf: 'end' }} onClick={resetBoundary}>
+        ↻
+      </Button>
+      <Boundary.Area>
+        <Boundary.Title>Suspense.CSROnly (100% Success)</Boundary.Title>
+        <Suspense.CSROnly fallback={<Spinner />}>
+          <ComponentWithUseSuspenseQuery
+            queryKey={['alwaysSuccess', 500]}
+            queryFn={alwaysSuccess500}
           />
-        </Suspense>
-        <h3>Suspense.CSROnly (Reveal after 2s)</h3>
-        <Suspense.CSROnly fallback={<>loading...</>}>
-          <UseQueryWithSuspense
-            queryKey={['async', 'alwaysSuccess', 'CSROnly']}
-            axiosLikeFn={getAxiosLike({ successPercentage: 100 })}
+          <ComponentWithUseSuspenseQuery
+            queryKey={['alwaysSuccess', 1000]}
+            queryFn={alwaysSuccess1000}
+          />
+          <ComponentWithUseSuspenseQuery
+            queryKey={['alwaysSuccess', 1500]}
+            queryFn={alwaysSuccess1500}
           />
         </Suspense.CSROnly>
-        <h1>ErrorBoundary (Error after 2s)</h1>
-        <ErrorBoundary
-          resetKeys={[resetBoundaryKey]}
-          fallback={({ error, reset }) => (
-            <button onClick={reset}>{JSON.stringify(error)}</button>
-          )}
-        >
-          <ErrorAfter4s />
-        </ErrorBoundary>
-        <h1>ResetSuspenseQueryBoundary (70% Error)</h1>
+      </Boundary.Area>
+
+      <DescriptionText>+</DescriptionText>
+
+      <QueryErrorResetBoundary>
+        {({ reset: resetQueryBoundary }) => (
+          <Boundary.Area>
+            <Boundary.Title>ErrorBoundary (100% Error)</Boundary.Title>
+            <ErrorBoundary
+              onReset={resetQueryBoundary}
+              resetKeys={[resetBoundaryKey]}
+              fallback={({ error, reset }) => (
+                <Box.Error>
+                  <ErrorDescription>
+                    Error: {JSON.stringify(error.message)}
+                  </ErrorDescription>
+                  <Button onClick={reset}>↻</Button>
+                </Box.Error>
+              )}
+            >
+              <Suspense.CSROnly fallback={<Spinner />}>
+                <ComponentWithUseSuspenseQuery
+                  queryKey={['error']}
+                  queryFn={alwaysFailure}
+                />
+                <ComponentWithUseSuspenseQuery
+                  queryKey={['success in error', 500]}
+                  queryFn={alwaysSuccess500}
+                />
+              </Suspense.CSROnly>
+            </ErrorBoundary>
+          </Boundary.Area>
+        )}
+      </QueryErrorResetBoundary>
+
+      <DescriptionText>=</DescriptionText>
+
+      <QueryErrorResetBoundary>
+        {({ reset: resetQueryBoundary }) => (
+          <Boundary.Area>
+            <Boundary.Title>AsyncBoundary.CSROnly (50% Success)</Boundary.Title>
+            <AsyncBoundary.CSROnly
+              onReset={resetQueryBoundary}
+              resetKeys={[resetBoundaryKey]}
+              pendingFallback={<Spinner />}
+              rejectedFallback={({ error, reset }) => (
+                <Box.Error>
+                  <ErrorDescription>
+                    Error: {JSON.stringify(error.message)}
+                  </ErrorDescription>
+                  <Button onClick={reset}>↻</Button>
+                </Box.Error>
+              )}
+            >
+              <ComponentWithUseSuspenseQuery
+                queryKey={['async', 'halfSuccess']}
+                queryFn={halfSuccess}
+              />
+            </AsyncBoundary.CSROnly>
+          </Boundary.Area>
+        )}
+      </QueryErrorResetBoundary>
+
+      <Spacer />
+
+      <Boundary.Area>
+        <Boundary.Title>ResetSuspenseQueryBoundary.CSROnly (20% Success)</Boundary.Title>
         <ResetSuspenseQueryBoundary.CSROnly
           resetKeys={[resetBoundaryKey]}
-          pendingFallback={<>AsyncBoundary Loading...</>}
+          pendingFallback={<Spinner />}
           rejectedFallback={({ error, reset }) => (
-            <button onClick={reset}> {JSON.stringify(error)} error...</button>
+            <Box.Error>
+              <ErrorDescription>Error: {JSON.stringify(error.message)}</ErrorDescription>
+              <Button onClick={reset}>↻</Button>
+            </Box.Error>
           )}
         >
-          <UseQueryWithSuspense
+          <ComponentWithUseSuspenseQuery
             queryKey={['async', 'almostFailure']}
-            axiosLikeFn={getAxiosLike({ successPercentage: 30 })}
+            queryFn={almostFailure}
           />
         </ResetSuspenseQueryBoundary.CSROnly>
-      </div>
-    </div>
+      </Boundary.Area>
+    </Boundary.Area>
   );
-};
+});
 
-export default Home;
+export default BoundaryExplain;
 
-const getAxiosLike =
-  (option: { waitMs?: number; successPercentage: number }) => async () => {
-    const { waitMs = 2000, successPercentage } = option;
-
-    const isSuccess = Math.random() < successPercentage / 100;
-
-    wait(waitMs);
-
-    if (!isSuccess) {
-      throw { status: 401, message: 'unauthorized' };
-    }
-
-    return { data: 'success in queryFn' };
-  };
-
-const wait = (ms: number) => {
-  let start = Date.now(),
-    now = start;
-  while (now - start < ms) {
-    now = Date.now();
-  }
-};
-
-const useResetKey = () => {
-  const [resetKey, setResetKey] = useState({});
-  const reset = useCallback(() => setResetKey(prev => ({ ...prev })), []);
-
-  return { resetKey, reset };
-};
+const alwaysSuccess500 = getAxios({ successPercentage: 100, waitMs: 500 });
+const alwaysSuccess1000 = getAxios({ successPercentage: 100, waitMs: 1000 });
+const alwaysSuccess1500 = getAxios({ successPercentage: 100, waitMs: 1500 });
+const halfSuccess = getAxios({ successPercentage: 50 });
+const almostFailure = getAxios({ successPercentage: 20 });
+const alwaysFailure = getAxios({ successPercentage: 0 });
