@@ -1,13 +1,17 @@
-import { useSuspenseQuery } from '@suspensive/react-query';
-import { Box } from './uis';
+import { useSuspenseQuery } from '@suspensive/react-query'
+import { Box, Description } from './uis'
 
 type Props = {
-  queryKey: unknown[];
-  queryFn: () => Promise<{ data: string }>;
-};
+  queryKey: ['query' | 'boundary', number]
+  queryFn: () => Promise<{ data: string }>
+}
 
 export const ComponentWithUseSuspenseQuery = ({ queryKey, queryFn }: Props) => {
-  const { data } = useSuspenseQuery(queryKey, queryFn);
+  const { data } = useSuspenseQuery(queryKey, queryFn)
 
-  return <Box.Success>{data.data}</Box.Success>;
-};
+  return (
+    <Box.Success>
+      <Description.Success>{data.data}</Description.Success>
+    </Box.Success>
+  )
+}

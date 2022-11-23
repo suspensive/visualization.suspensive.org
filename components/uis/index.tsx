@@ -1,3 +1,4 @@
+import { PropsWithChildren } from 'react'
 import styled from '@emotion/styled'
 
 export const Button = styled.button`
@@ -6,7 +7,7 @@ export const Button = styled.button`
   color: black;
   border: 0;
   transition: all 200ms;
-  font-size: 24px;
+  font-size: 22px;
   width: 32px;
   height: 32px;
   font-weight: 900;
@@ -18,15 +19,16 @@ export const Button = styled.button`
   }
 `
 
-export const ErrorDescription = styled.div``
+const BaseDescription = styled.div``
+export const Description = {
+  Error: styled(BaseDescription)``,
+  Success: styled(BaseDescription)``,
+}
+
 export const DescriptionText = styled.div`
   align-self: center;
-  font-size: 40px;
+  font-size: 16px;
   font-weight: 900;
-`
-
-export const Spacer = styled.div`
-  height: 90px;
 `
 
 export const Spinner = styled.div`
@@ -55,14 +57,27 @@ export const BaseBox = styled.div`
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  padding: 20px;
+  padding: 12px 20px;
   border-radius: 8px;
   border: 0;
   gap: 8px;
-  height: 60px;
   color: black;
-`
+  transition: all 200ms;
+  animation: fadein 200ms;
 
+  :hover {
+    opacity: 0.8;
+  }
+
+  @keyframes fadein {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+`
 export const Box = {
   Success: styled(BaseBox)`
     background-color: yellowgreen;
@@ -70,28 +85,35 @@ export const Box = {
   Error: styled(BaseBox)`
     background-color: tomato;
   `,
+  Default: styled(BaseBox)`
+    background-color: white;
+  `,
 }
 
-export const Boundary = {
-  Area: styled.div`
-    box-sizing: border-box;
-    position: relative;
+export const Area = ({ title, children }: PropsWithChildren<{ title: string }>) => (
+  <AreaStyled.Wrapper>
+    <AreaStyled.Title>{title}</AreaStyled.Title>
+    <AreaStyled.Content>{children}</AreaStyled.Content>
+  </AreaStyled.Wrapper>
+)
+
+const AreaStyled = {
+  Wrapper: styled.div`
+    flex: 1;
+    max-width: 600px;
+  `,
+  Content: styled.div`
     display: flex;
     flex-direction: column;
-    margin-top: 32px;
-    align-items: stretch;
     border: 4px solid white;
     border-radius: 16px;
-    padding: 16px;
-    flex: 1;
-    min-height: 100px;
-    max-width: 800px;
+    padding: 12px;
+    gap: 16px;
   `,
 
-  Title: styled.h3`
-    position: absolute;
+  Title: styled.h2`
     margin: 0;
-    left: 16px;
-    top: -36px;
+    margin-left: 20px;
+    margin-bottom: 4px;
   `,
 }
