@@ -15,9 +15,8 @@ const ReactQueryPage = withResetKey(({ reset, resetKey }) => {
       <Area title="QueryErrorResetBoundary + ErrorBoundary + Suspense">
         <QueryErrorResetBoundary>
           {({ reset: resetQueryBoundary }) => (
-            <ErrorBoundary
+            <ErrorBoundary.ResetKey
               onReset={resetQueryBoundary}
-              resetKeys={[resetKey]}
               fallback={RejectedFallback}
             >
               <Suspense.CSROnly fallback={<Spinner />}>
@@ -30,7 +29,7 @@ const ReactQueryPage = withResetKey(({ reset, resetKey }) => {
                   queryFn={api.almostFailure}
                 />
               </Suspense.CSROnly>
-            </ErrorBoundary>
+            </ErrorBoundary.ResetKey>
           )}
         </QueryErrorResetBoundary>
       </Area>

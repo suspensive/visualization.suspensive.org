@@ -9,7 +9,7 @@ import { api } from '../api';
 import { ComponentWithUseSuspenseQuery, RejectedFallback } from '../components';
 import { Area, Button, DescriptionText, Spinner } from '../components/uis';
 
-const BoundaryExplain = withResetKey(({ reset, resetKey }) => {
+const BoundaryExplain = withResetKey(({ reset }) => {
   const { reset: queryErrorReset } = useQueryErrorResetBoundary();
 
   return (
