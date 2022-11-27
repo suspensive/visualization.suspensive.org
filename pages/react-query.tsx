@@ -1,9 +1,9 @@
-import { ErrorBoundary, Suspense, withResetKey } from '@suspensive/react-boundary';
-import { QueryAsyncBoundary, QueryErrorBoundary } from '@suspensive/react-query';
-import { QueryErrorResetBoundary } from '@tanstack/react-query';
-import { api } from '../api';
-import { ComponentWithUseSuspenseQuery, RejectedFallback } from '../components';
-import { Area, Button, Spinner } from '../components/uis';
+import { ErrorBoundary, Suspense, withResetKey } from '@suspensive/react-boundary'
+import { QueryAsyncBoundary, QueryErrorBoundary } from '@suspensive/react-query'
+import { QueryErrorResetBoundary } from '@tanstack/react-query'
+import { api } from '../api'
+import { ComponentWithUseSuspenseQuery, RejectedFallback } from '../components'
+import { Area, Button, Spinner } from '../components/uis'
 
 const ReactQueryPage = withResetKey(({ reset, resetKey }) => {
   return (
@@ -15,19 +15,10 @@ const ReactQueryPage = withResetKey(({ reset, resetKey }) => {
       <Area title="QueryErrorResetBoundary + ErrorBoundary + Suspense">
         <QueryErrorResetBoundary>
           {({ reset: resetQueryBoundary }) => (
-            <ErrorBoundary.ResetKey
-              onReset={resetQueryBoundary}
-              fallback={RejectedFallback}
-            >
+            <ErrorBoundary.ResetKey onReset={resetQueryBoundary} fallback={RejectedFallback}>
               <Suspense.CSROnly fallback={<Spinner />}>
-                <ComponentWithUseSuspenseQuery
-                  queryKey={['query', 1]}
-                  queryFn={api.almostFailure}
-                />
-                <ComponentWithUseSuspenseQuery
-                  queryKey={['query', 2]}
-                  queryFn={api.almostFailure}
-                />
+                <ComponentWithUseSuspenseQuery queryKey={['query', 1]} queryFn={api.almostFailure} />
+                <ComponentWithUseSuspenseQuery queryKey={['query', 2]} queryFn={api.almostFailure} />
               </Suspense.CSROnly>
             </ErrorBoundary.ResetKey>
           )}
@@ -37,14 +28,8 @@ const ReactQueryPage = withResetKey(({ reset, resetKey }) => {
       <Area title="QueryErrorBoundary + Suspense">
         <QueryErrorBoundary resetKeys={[resetKey]} fallback={RejectedFallback}>
           <Suspense.CSROnly fallback={<Spinner />}>
-            <ComponentWithUseSuspenseQuery
-              queryKey={['query', 3]}
-              queryFn={api.almostFailure}
-            />
-            <ComponentWithUseSuspenseQuery
-              queryKey={['query', 4]}
-              queryFn={api.almostFailure}
-            />
+            <ComponentWithUseSuspenseQuery queryKey={['query', 3]} queryFn={api.almostFailure} />
+            <ComponentWithUseSuspenseQuery queryKey={['query', 4]} queryFn={api.almostFailure} />
           </Suspense.CSROnly>
         </QueryErrorBoundary>
       </Area>
@@ -55,18 +40,12 @@ const ReactQueryPage = withResetKey(({ reset, resetKey }) => {
           pendingFallback={<Spinner />}
           rejectedFallback={RejectedFallback}
         >
-          <ComponentWithUseSuspenseQuery
-            queryKey={['query', 5]}
-            queryFn={api.almostFailure}
-          />
-          <ComponentWithUseSuspenseQuery
-            queryKey={['query', 6]}
-            queryFn={api.almostFailure}
-          />
+          <ComponentWithUseSuspenseQuery queryKey={['query', 5]} queryFn={api.almostFailure} />
+          <ComponentWithUseSuspenseQuery queryKey={['query', 6]} queryFn={api.almostFailure} />
         </QueryAsyncBoundary.CSROnly>
       </Area>
     </Area>
-  );
-});
+  )
+})
 
-export default ReactQueryPage;
+export default ReactQueryPage
