@@ -2,10 +2,10 @@ import { ErrorBoundary, Suspense, withResetKey } from '@suspensive/react-boundar
 import { QueryAsyncBoundary, QueryErrorBoundary } from '@suspensive/react-query'
 import { QueryErrorResetBoundary } from '@tanstack/react-query'
 import { api } from '../api'
-import { UseSuspenseQuery, RejectedFallback } from '../components'
+import { RejectedFallback, UseSuspenseQuery } from '../components'
 import { Area, Button, Spinner } from '../components/uis'
 
-const ReactQueryPage = withResetKey(({ reset, resetKey }) => {
+const ReactQueryPage = withResetKey(({ reset }) => {
   return (
     <Area title="ResetKey">
       <Button style={{ alignSelf: 'end' }} onClick={reset}>
@@ -26,23 +26,19 @@ const ReactQueryPage = withResetKey(({ reset, resetKey }) => {
       </Area>
 
       <Area title="QueryErrorBoundary + Suspense">
-        <QueryErrorBoundary resetKeys={[resetKey]} fallback={RejectedFallback}>
+        <QueryErrorBoundary.ResetKey fallback={RejectedFallback}>
           <Suspense.CSROnly fallback={<Spinner />}>
             <UseSuspenseQuery queryKey={['query', 3]} queryFn={api.almostFailure} />
             <UseSuspenseQuery queryKey={['query', 4]} queryFn={api.almostFailure} />
           </Suspense.CSROnly>
-        </QueryErrorBoundary>
+        </QueryErrorBoundary.ResetKey>
       </Area>
 
       <Area title="QueryAsyncBoundary">
-        <QueryAsyncBoundary.CSROnly
-          resetKeys={[resetKey]}
-          pendingFallback={<Spinner />}
-          rejectedFallback={RejectedFallback}
-        >
+        <QueryAsyncBoundary.CSROnly.ResetKey pendingFallback={<Spinner />} rejectedFallback={RejectedFallback}>
           <UseSuspenseQuery queryKey={['query', 5]} queryFn={api.almostFailure} />
           <UseSuspenseQuery queryKey={['query', 6]} queryFn={api.almostFailure} />
-        </QueryAsyncBoundary.CSROnly>
+        </QueryAsyncBoundary.CSROnly.ResetKey>
       </Area>
     </Area>
   )

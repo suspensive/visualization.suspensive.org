@@ -1,7 +1,7 @@
 import { AsyncBoundary, ErrorBoundary, Suspense, withResetKey } from '@suspensive/react-boundary'
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import { api } from '../api'
-import { UseSuspenseQuery, RejectedFallback } from '../components'
+import { RejectedFallback, UseSuspenseQuery } from '../components'
 import { Area, Button, DescriptionText, Spinner } from '../components/uis'
 
 const BoundaryExplain = withResetKey(({ reset }) => {
