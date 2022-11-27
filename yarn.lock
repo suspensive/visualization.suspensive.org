@@ -316,17 +316,17 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
-"@suspensive/react-boundary@^0.0.15", "@suspensive/react-boundary@workspace:^":
-  version "0.0.15"
-  resolved "https://registry.yarnpkg.com/@suspensive/react-boundary/-/react-boundary-0.0.15.tgz#aed1a45018af66883c995d55c382183bf9a844f5"
-  integrity sha512-zN32Y8ztPyRv4FZM3n2IeTWU0LX0FF8sp8lCK9yXVpEOKeGCgJ/vnSwXljBFM5IpTkLWYaiYfVD/6pF109As3A==
+"@suspensive/react-boundary@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@suspensive/react-boundary/-/react-boundary-0.2.0.tgz#ba65a4bfaf65e9dcfe222475a498449bfda3c07f"
+  integrity sha512-RAf2GqcKgW+i1smlX/e+DZIRZMftTBWdh3uWd9g+h1HtmtflVws3SPGVx+xTByCsg209Hz8njcwSxmuCWHI/Eg==
 
-"@suspensive/react-query@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@suspensive/react-query/-/react-query-0.0.6.tgz#58b94571f15ba376351ed4c0f8a0601b9365989f"
-  integrity sha512-rxc0ENqxOsOY1RCoj1vi3qcU64AdoHqQ//FTj2JziJT9jEG/O0+CpTmAGUn51sUCN9Ylq94FC7lDsdlvKFtIrw==
+"@suspensive/react-query@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@suspensive/react-query/-/react-query-0.2.0.tgz#fe6e9658fa3e00f6b71eeb3718ba56db26e91cf8"
+  integrity sha512-xW0+v1iDUO+YDse0/UwxSSgJndhqwJ+eUrXyZQWgQjCodN7xFHr/5+zpvo30e/VBc3eSXwiqfAlymr3odHcujg==
   dependencies:
-    "@suspensive/react-boundary" "workspace:^"
+    "@suspensive/react-boundary" "^0.2.0"
     "@tanstack/react-query" "^4.16.1"
 
 "@swc/helpers@0.4.11":
