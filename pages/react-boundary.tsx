@@ -1,7 +1,7 @@
 import { AsyncBoundary, ErrorBoundary, Suspense, withResetKey } from '@suspensive/react-boundary'
 import { useQueryErrorResetBoundary } from '@tanstack/react-query'
 import { api } from '../api'
-import { ComponentWithUseSuspenseQuery, RejectedFallback } from '../components'
+import { UseSuspenseQuery, RejectedFallback } from '../components'
 import { Area, Button, DescriptionText, Spinner } from '../components/uis'
 
 const BoundaryExplain = withResetKey(({ reset }) => {
@@ -14,9 +14,9 @@ const BoundaryExplain = withResetKey(({ reset }) => {
       </Button>
       <Area title="Suspense (Continuous 3 fetching)">
         <Suspense.CSROnly fallback={<Spinner />}>
-          <ComponentWithUseSuspenseQuery queryKey={['boundary', 1]} queryFn={api.alwaysSuccess500} />
-          <ComponentWithUseSuspenseQuery queryKey={['boundary', 2]} queryFn={api.alwaysSuccess1000} />
-          <ComponentWithUseSuspenseQuery queryKey={['boundary', 3]} queryFn={api.alwaysSuccess1500} />
+          <UseSuspenseQuery queryKey={['boundary', 1]} queryFn={api.alwaysSuccess500} />
+          <UseSuspenseQuery queryKey={['boundary', 2]} queryFn={api.alwaysSuccess1000} />
+          <UseSuspenseQuery queryKey={['boundary', 3]} queryFn={api.alwaysSuccess1500} />
         </Suspense.CSROnly>
       </Area>
 
@@ -25,8 +25,8 @@ const BoundaryExplain = withResetKey(({ reset }) => {
       <Area title="ErrorBoundary (100% Error)">
         <ErrorBoundary.ResetKey onReset={queryErrorReset} fallback={RejectedFallback}>
           <Suspense.CSROnly fallback={<Spinner />}>
-            <ComponentWithUseSuspenseQuery queryKey={['boundary', 4]} queryFn={api.alwaysFailure} />
-            <ComponentWithUseSuspenseQuery queryKey={['boundary', 5]} queryFn={api.alwaysSuccess500} />
+            <UseSuspenseQuery queryKey={['boundary', 4]} queryFn={api.alwaysFailure} />
+            <UseSuspenseQuery queryKey={['boundary', 5]} queryFn={api.alwaysSuccess500} />
           </Suspense.CSROnly>
         </ErrorBoundary.ResetKey>
       </Area>
@@ -39,8 +39,8 @@ const BoundaryExplain = withResetKey(({ reset }) => {
           pendingFallback={<Spinner />}
           rejectedFallback={RejectedFallback}
         >
-          <ComponentWithUseSuspenseQuery queryKey={['boundary', 6]} queryFn={api.alwaysSuccess500} />
-          <ComponentWithUseSuspenseQuery queryKey={['boundary', 7]} queryFn={api.halfSuccess} />
+          <UseSuspenseQuery queryKey={['boundary', 6]} queryFn={api.alwaysSuccess500} />
+          <UseSuspenseQuery queryKey={['boundary', 7]} queryFn={api.halfSuccess} />
         </AsyncBoundary.CSROnly.ResetKey>
       </Area>
     </Area>
