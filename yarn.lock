@@ -316,18 +316,15 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.2.0.tgz#8be36a1f66f3265389e90b5f9c9962146758f728"
   integrity sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==
 
-"@suspensive/react-boundary@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@suspensive/react-boundary/-/react-boundary-0.4.0.tgz#6221af8d7ffe2cdfbc8f0ebc7f6119d6766ce9a0"
-  integrity sha512-NSL7onanM9JCJjSs/F1Ha9btcItiS6uVTNOh3NaPlyruwqLXrdhmdWeHE9jsQFrBteV+p875v6ZebuqCbku6pA==
+"@suspensive/react-query@^0.5.17":
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/@suspensive/react-query/-/react-query-0.5.17.tgz#81bb7901be6933cf37dfc07bb5179c818e917608"
+  integrity sha512-apwiyEJDVHa+kVGCSt42U8wJCUmrarmBwPwzJ9izTtGXjoMp7zZgAIQryDP9fVJWqCJ9pwjujEKh6Zt0JlmK7w==
 
-"@suspensive/react-query@^0.4.0":
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@suspensive/react-query/-/react-query-0.4.0.tgz#60a898872bdc6d593bd3a4d22a20d08da758ad00"
-  integrity sha512-W+p66PwxxrULJeWSw4q6RSPLyngbCrt47k++PONwo3FMkvmd7hCrdC7UbNWBkj63kC0SvJ/Xkm4D56A/+10krw==
-  dependencies:
-    "@suspensive/react-boundary" "^0.4.0"
-    "@tanstack/react-query" "^4.16.1"
+"@suspensive/react@^0.5.17":
+  version "0.5.17"
+  resolved "https://registry.yarnpkg.com/@suspensive/react/-/react-0.5.17.tgz#ca08b15658a44b7c178b1c20b288f19b8ddc08b9"
+  integrity sha512-d9QtO2TBd9d1GSBGMhgCDNunwCf87Wjr95fpdVAQYQaZmt9dUl5ZoDPCKsO5r9oo2ZnpAmMrUSvPC6nuGGgmDQ==
 
 "@swc/helpers@0.4.11":
   version "0.4.11"
@@ -364,6 +361,13 @@
   dependencies:
     "@tanstack/query-core" "4.15.1"
     use-sync-external-store "^1.2.0"
+
+"@toss/error-boundary@^1.1.3":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@toss/error-boundary/-/error-boundary-1.1.3.tgz#eca5a6b20212e4df02dad3efc8940c8c2172f9f3"
+  integrity sha512-5hVcHGKkMDSleW2B7wJLtzjhRZIY8EBXCidca0r7Ging4Ot2ND8dunQhtiWbgeqTPB4Tav7fWDxMrz2/Ncg4ww==
+  dependencies:
+    "@toss/utils" "^1.2.2"
 
 "@toss/utils@^1.2.2":
   version "1.2.2"
